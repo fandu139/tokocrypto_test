@@ -1,14 +1,24 @@
 const express = require('express');
 const helmet = require('helmet');
 const mysql = require('mysql');
+var bodyParser = require('body-parser');
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 var connection = mysql.createPool({
-  connectionLimit: 50,
+	connectionLimit: 50,
 	host: '127.0.0.1',
 	user: 'root',
-	password: 'root',
+	password: '',
 	database: 'tokocrypto'
+});
+
+app.get('/persons/:username', function(req, res){
+    var param_username = req.params.username;
+	res.send(param_username);
+    
 });
 
 app.get("/", function(req, resp){
@@ -85,8 +95,8 @@ app.get("/soal2", function(req, resp){
 
 });
 
-//var soal3 = require('./router/soal3');
-//app.use('/soal3', soal3);
+var soal3 = require('./router/soal3');
+app.use('/soal3', soal3);
 
 
 app.listen(1337, function(){
